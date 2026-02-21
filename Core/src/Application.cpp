@@ -13,7 +13,16 @@ namespace rngo
     Application::Application(const ApplicationConfig& config)
         : m_isRunning(false)
     {
-        m_window = std::make_unique<GLFWWindow>(config.Height, config.Width, config.Title, true);
+        WindowConfig windowConfig{
+            .Title = config.Title,
+            .Height = config.Height,
+            .Width = config.Width,
+            .RenderType = OpenGLWindowConfig{4, 6},
+            .VSync = true
+        };
+
+        m_window = std::make_unique<GLFWWindow>(windowConfig);
+        m_renderRunnable = std::make_unique<RenderRunnable>(m_window.get());
     }
 
     Application::~Application() = default;
@@ -22,18 +31,21 @@ namespace rngo
     {
         m_isRunning = true;
 
+        std::thread renderThread(&RenderRunnable::Run, m_renderRunnable.get());
+
         // TODO: Use a fixed time-step for systems.
         auto lastFrame = std::chrono::high_resolution_clock::now();
         while (m_isRunning)
         {
-            const float deltaTime =
-                std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - lastFrame).count();
+            const float deltaTime = std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - lastFrame).count();
             lastFrame = std::chrono::high_resolution_clock::now();
 
             OnUpdate();
-            OnRender();
 
             m_isRunning = false;
         }
+
+        m_renderRunnable->Stop();
+        renderThread.join();
     }
 }

@@ -5,6 +5,8 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <glad/gl.h>
+
 #include <string_view>
 
 #include "IWindow.h"
@@ -14,6 +16,17 @@ namespace rngo
     class GLFWWindow : public IWindow
     {
     public:
-        GLFWWindow(int height, int width, std::string_view name, bool vsync);
+        explicit GLFWWindow(const WindowConfig& config);
+
+    public:
+        void SwapBuffers() override;
+        void SetTitle(std::string_view title) override;
+
+    public:
+        void LoadGLAD() override;
+        void MakeCurrentContext() override;
+
+    private:
+        GLFWwindow* m_rawWindow;
     };
 }

@@ -6,6 +6,7 @@
 
 #include <memory>
 
+#include "Rendering/RenderRunnable.h"
 #include "Rendering/Window/IWindow.h"
 
 namespace rngo
@@ -31,12 +32,10 @@ namespace rngo
         bool m_isRunning;
 
         std::unique_ptr<IWindow> m_window;
+        std::unique_ptr<RenderRunnable> m_renderRunnable;
 
     protected:
         virtual void OnUpdate()
-        {
-        }
-        virtual void OnRender()
         {
         }
     };
