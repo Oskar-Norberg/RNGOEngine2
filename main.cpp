@@ -3,31 +3,92 @@
 //
 
 #include <iostream>
+#include <print>
 
+#include "ECS/Components.h"
 #include "ECS/Systems/SystemContext.h"
 #include "ECS/Systems/SystemScheduler.h"
 #include "ECS/World.h"
 
-void TestSystem(rngo::World& world, rngo::EngineSystemContext& context)
+void ResolveEnTTMetaAny(const entt::meta_any& any)
 {
-    const auto intView = world.GetRegistry().view<int>();
-    for (const auto& [entity, intVal] : intView.each())
+    // Int
+    if (const auto* integer = any.try_cast<int>(); integer != nullptr)
     {
-        std::cout << intVal << std::endl;
+        std::cout << *integer << '\n';
+    }
+
+    // Float
+    if (const auto* floatingPoint = any.try_cast<float>(); floatingPoint != nullptr)
+    {
+        std::cout << *floatingPoint << '\n';
+    }
+
+    // Bool
+    if (const auto* boolean = any.try_cast<bool>(); boolean != nullptr)
+    {
+        std::cout << *boolean << '\n';
+    }
+
+    // String
+    if (const auto* stdString = any.try_cast<std::string>(); stdString != nullptr)
+    {
+        std::cout << *stdString << '\n';
+    }
+
+    // Vec3
+    if (const auto* vec3 = any.try_cast<glm::vec3>(); vec3 != nullptr)
+    {
+        std::cout << vec3->x << ", " << vec3->y << ", " << vec3->z << '\n';
     }
 }
 
 int main()
 {
-    rngo::EngineSystemContext context;
+    rngo::World world;
+    auto& registry = world.GetRegistry();
+
+    rngo::EngineSystemContext context{.World = &world};
     rngo::SystemScheduler<rngo::EngineSystemContext> scheduler;
 
-    rngo::World world;
+    auto testEntity = world.CreateEntity();
+    testEntity.AddComponent<rngo::TestComponent>(rngo::TestComponent{1.0f, 2.0f, 3});
+    testEntity.AddComponent<rngo::Transform>(rngo::Transform{
+        glm::vec3{123.0f, 234.0f, 345.0f},
+        glm::quat{},
+        glm::vec3{1.0f},
+    });
 
-    scheduler.AddSystem(TestSystem);
+    const auto allView = registry.view<entt::entity>();
+    // TODO: O(n^2)
+    for (const auto entity : allView)
+    {
+        const auto registeredMetaTypes = entt::resolve();
+        for (const auto& [metaTypeID, metaType] : registeredMetaTypes)
+        {
+            const auto storages = registry.storage();
+            for (const auto& [storageTypeID, storage] : storages)
+            {
+                if (storage.contains(entity))
+                {
+                    if (metaTypeID == storageTypeID)
+                    {
+                        void* componentPtr = storage.value(entity);
+                        entt::meta_any instance = metaType.from_void(componentPtr);
 
-    auto entity = world.CreateEntity();
-    entity.AddComponent<int>(5);
+                        std::cout << "Entity has registered component: " << metaType.name() << "\n";
+                        std::cout << "Registered Type has data:" << "\n";
+                        for (const auto& [dataTypeID, metaData] : metaType.data())
+                        {
+                            std::cout << metaData.name() << ": ";
+                            const auto& anyRef = metaData.get(instance);
+                            ResolveEnTTMetaAny(anyRef);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    scheduler.Update(world, context);
+    scheduler.Update(context);
 }

@@ -19,6 +19,7 @@ target_link_libraries(${CORE_PROJECT_NAME} PUBLIC
 
         ${ECS_PROJECT_NAME}
         ${SYSTEMS_PROJECT_NAME}
+        ${COMPONENTS_PROJECT_NAME}
 )
 
 #target_compile_features(${CORE_PROJECT_NAME} PUBLIC cxx_std_23)

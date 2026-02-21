@@ -4,10 +4,13 @@
 
 #pragma once
 
+#include "ECS/World.h"
+
 namespace rngo
 {
     struct EngineSystemContext
     {
+        World* World;
     };
 
     struct SystemContext

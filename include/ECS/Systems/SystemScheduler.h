@@ -2,22 +2,20 @@
 
 #include <vector>
 
-#include "ECS/World.h"
-
 namespace rngo
 {
     template<typename TSystemContext>
     class SystemScheduler
     {
     public:
-        using SystemFn = void (*)(World&, TSystemContext&);
+        using SystemFn = void (*)(TSystemContext&);
 
     public:
-        void Update(World& world, TSystemContext& context)
+        void Update(TSystemContext& context)
         {
             for (const auto& sysFunc : m_systems)
             {
-                sysFunc(world, context);
+                sysFunc(context);
             }
         }
 
