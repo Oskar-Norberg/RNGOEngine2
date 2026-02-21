@@ -8,6 +8,11 @@
 
 namespace rngo
 {
+    class EventQueue;
+}
+
+namespace rngo
+{
     struct OpenGLWindowConfig
     {
         int Major, Minor;
@@ -25,6 +30,9 @@ namespace rngo
     {
     public:
         virtual ~IWindow() = default;
+
+    public:
+        virtual void PollEvents(EventQueue& eventQueue) = 0;
 
     public:
         virtual void SwapBuffers() = 0;

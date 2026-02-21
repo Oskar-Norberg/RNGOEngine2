@@ -6,6 +6,7 @@
 
 #include <memory>
 
+#include "Events/EventQueue.h"
 #include "Rendering/RenderRunnable.h"
 #include "Rendering/Window/IWindow.h"
 
@@ -14,6 +15,7 @@ namespace rngo
     struct ApplicationConfig
     {
         std::string_view Title;
+
         int Width = 1280;
         int Height = 720;
 
@@ -31,6 +33,7 @@ namespace rngo
     protected:
         bool m_isRunning;
 
+        EventQueue m_eventQueue;
         std::unique_ptr<IWindow> m_window;
         std::unique_ptr<RenderRunnable> m_renderRunnable;
 

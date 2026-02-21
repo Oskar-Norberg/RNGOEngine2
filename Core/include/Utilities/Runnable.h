@@ -26,7 +26,7 @@ namespace rngo
             m_isRunning = true;
             while (m_isRunning)
             {
-                TickInternal();
+                Tick();
             }
 
             ExitInternal();

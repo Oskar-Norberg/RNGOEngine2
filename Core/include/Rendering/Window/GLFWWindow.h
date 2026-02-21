@@ -19,6 +19,9 @@ namespace rngo
         explicit GLFWWindow(const WindowConfig& config);
 
     public:
+        void PollEvents(EventQueue& eventQueue) override;
+
+    public:
         void SwapBuffers() override;
         void SetTitle(std::string_view title) override;
 

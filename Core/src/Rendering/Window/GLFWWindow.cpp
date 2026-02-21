@@ -4,6 +4,8 @@
 
 #include "Rendering/Window/GLFWWindow.h"
 
+#include "Events/EngineEvents.h"
+#include "Events/EventQueue.h"
 #include "Logging/Logger.h"
 #include "Utilities/RNGOAsserts.h"
 
@@ -36,6 +38,16 @@ namespace rngo
             RNGO_ASSERT(false && "Failed to create GLFW window.");
             // TODO: Throw Irrecoverable error
             // TODO: UB
+        }
+    }
+
+    void GLFWWindow::PollEvents(EventQueue& eventQueue)
+    {
+        glfwPollEvents();
+
+        if (glfwWindowShouldClose(m_rawWindow))
+        {
+            eventQueue.EmplaceEvent<ExitRequestedEvent>();
         }
     }
 

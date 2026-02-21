@@ -1,6 +1,7 @@
 include(CMake/EngineUnits/Utilities.cmake)
 include(CMake/EngineUnits/Logging.cmake)
 include(CMake/EngineUnits/Threading.cmake)
+include(CMake/EngineUnits/Events.cmake)
 
 include(CMake/EngineUnits/ECS.cmake)
 include(CMake/EngineUnits/Systems.cmake)
@@ -14,6 +15,7 @@ list(APPEND ALL_ENGINE_UNITS
         ${UTILITIES_PROJECT_NAME}
         ${LOGGING_PROJECT_NAME}
         ${THREADING_PROJECT_NAME}
+        ${EVENTS_PROJECT_NAME}
 
         ${ECS_PROJECT_NAME}
         ${SYSTEMS_PROJECT_NAME}

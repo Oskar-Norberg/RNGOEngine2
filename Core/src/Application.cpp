@@ -6,6 +6,7 @@
 
 #include <chrono>
 
+#include "Events/EngineEvents.h"
 #include "Rendering/Window/GLFWWindow.h"
 
 namespace rngo
@@ -37,12 +38,22 @@ namespace rngo
         auto lastFrame = std::chrono::high_resolution_clock::now();
         while (m_isRunning)
         {
-            const float deltaTime = std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - lastFrame).count();
+            const float deltaTime =
+                std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - lastFrame).count();
             lastFrame = std::chrono::high_resolution_clock::now();
 
+            m_window->PollEvents(m_eventQueue);
             OnUpdate();
 
-            m_isRunning = false;
+            // TODO: TEMPORARY DEBUGGING CODE
+            const auto events = m_eventQueue.GetEvents();
+            for (const auto& event : events)
+            {
+                if (event->GetType() == EventType::ExitRequested)
+                {
+                    m_isRunning = false;
+                }
+            }
         }
 
         m_renderRunnable->Stop();
