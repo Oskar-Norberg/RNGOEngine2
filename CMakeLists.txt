@@ -22,4 +22,5 @@ target_link_libraries(${CORE_PROJECT_NAME} PUBLIC
         ${COMPONENTS_PROJECT_NAME}
 )
 
+
 #target_compile_features(${CORE_PROJECT_NAME} PUBLIC cxx_std_23)

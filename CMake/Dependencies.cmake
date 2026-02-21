@@ -2,16 +2,16 @@
     add_subdirectory(./vendor/tracy)
 endif ()
 
-# GLFW
-## GLFW Build Properties
 add_subdirectory(./vendor/glfw)
 add_subdirectory(./vendor/entt)
-add_subdirectory(./vendor/glm)
 add_subdirectory(./vendor/glad)
 add_subdirectory(./vendor/stb_image)
 add_subdirectory(./vendor/yaml-cpp)
 add_subdirectory(./vendor/spdlog)
 add_subdirectory(./vendor/magic_enum)
+
+add_compile_definitions(GLM_ENABLE_EXPERIMENTAL)
+add_subdirectory(./vendor/glm)
 
 # Assimp
 ## Assimp Build Properties
