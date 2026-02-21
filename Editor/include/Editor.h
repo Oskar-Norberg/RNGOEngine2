@@ -10,6 +10,7 @@ namespace rngo_editor
 {
     class Editor : public rngo::Application
     {
-
+    public:
+        explicit Editor(const rngo::ApplicationConfig& config);
     };
 }

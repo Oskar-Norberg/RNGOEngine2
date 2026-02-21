@@ -6,11 +6,14 @@
 
 #include <chrono>
 
+#include "Rendering/Window/GLFWWindow.h"
+
 namespace rngo
 {
-    Application::Application()
+    Application::Application(const ApplicationConfig& config)
         : m_isRunning(false)
     {
+        m_window = std::make_unique<GLFWWindow>(config.Height, config.Width, config.Title, true);
     }
 
     Application::~Application() = default;

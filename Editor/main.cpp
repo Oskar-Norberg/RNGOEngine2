@@ -4,15 +4,21 @@
 
 #include <memory>
 
-#include "Entrypoint.h"
 #include "Application.h"
 #include "Editor.h"
+#include "Entrypoint.h"
 
 namespace rngo
 {
     std::unique_ptr<Application> CreateApplication()
     {
-        return std::make_unique<rngo_editor::Editor>();
+        ApplicationConfig config{
+            .Title = "RNGOEditor",
+            .Width = 1280,
+            .Height = 720,
+        };
+
+        return std::make_unique<rngo_editor::Editor>(config);
     }
 }
 

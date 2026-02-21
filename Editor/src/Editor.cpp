@@ -4,6 +4,10 @@
 
 #include "Editor.h"
 
-namespace rngo_editor {
-
+namespace rngo_editor
+{
+    Editor::Editor(const rngo::ApplicationConfig& config)
+        : Application(config)
+    {
+    }
 }
