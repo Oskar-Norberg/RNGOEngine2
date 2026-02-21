@@ -8,8 +8,10 @@ include(CMake/Dependencies.cmake)
 # All individual EngineUnits
 include(CMake/EngineUnits.cmake)
 
-add_executable(${CORE_PROJECT_NAME}
-        main.cpp
+add_library(${CORE_PROJECT_NAME} STATIC
+        include/Application.h
+        src/Application.cpp
+        include/EntryPoint.h
 )
 target_include_directories(${CORE_PROJECT_NAME} PUBLIC include)
 
@@ -21,6 +23,5 @@ target_link_libraries(${CORE_PROJECT_NAME} PUBLIC
         ${SYSTEMS_PROJECT_NAME}
         ${COMPONENTS_PROJECT_NAME}
 )
-
 
 #target_compile_features(${CORE_PROJECT_NAME} PUBLIC cxx_std_23)
