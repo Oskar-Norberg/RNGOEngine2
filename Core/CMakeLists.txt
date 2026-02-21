@@ -15,13 +15,6 @@ add_library(${CORE_PROJECT_NAME} STATIC
 )
 target_include_directories(${CORE_PROJECT_NAME} PUBLIC include)
 
-target_link_libraries(${CORE_PROJECT_NAME} PUBLIC
-        ${UTILITIES_PROJECT_NAME}
-        ${LOGGING_PROJECT_NAME}
-
-        ${ECS_PROJECT_NAME}
-        ${SYSTEMS_PROJECT_NAME}
-        ${COMPONENTS_PROJECT_NAME}
-)
+target_link_libraries(${CORE_PROJECT_NAME} PUBLIC ${ALL_ENGINE_UNITS})
 
 #target_compile_features(${CORE_PROJECT_NAME} PUBLIC cxx_std_23)
