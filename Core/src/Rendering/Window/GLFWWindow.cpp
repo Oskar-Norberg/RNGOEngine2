@@ -39,6 +39,8 @@ namespace rngo
             // TODO: Throw Irrecoverable error
             // TODO: UB
         }
+
+        // TODO: Set VSync
     }
 
     void GLFWWindow::PollEvents(EventQueue& eventQueue)

@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "Application.h"
+#include "Logging/Logger.h"
 
 namespace rngo
 {
@@ -14,9 +15,12 @@ namespace rngo
 
     inline int Main(const int argc, char** argv)
     {
-        // TODO: Initialize Logger? To keep it outside of the Application?
+        Logger::InitializeLogger();
+
         const auto app = CreateApplication();
         app->Run();
+
+        Logger::ExitLogger();
 
         return 0;
     }

@@ -7,7 +7,6 @@
 #include <spdlog/spdlog.h>
 
 #include <chrono>
-#include <magic_enum/magic_enum.hpp>
 #include <source_location>
 #include <string>
 #include <string_view>
@@ -32,38 +31,37 @@ namespace rngo
         std::chrono::time_point<std::chrono::system_clock> TimePoint;
     };
 
-    class Logger : public rngo::Singleton<Logger>
+    // TODO: Consider giving logs a category, could be thread or else.
+    class Logger
     {
     public:
-        Logger();
-        ~Logger();
+        static void InitializeLogger();
+        static void ExitLogger();
 
-    public:
         template<typename... Args>
         static void Log(
-            std::source_location location, const LogLevel level, spdlog::format_string_t<Args...> fmt,
+            const std::source_location location, const LogLevel level, spdlog::format_string_t<Args...> fmt,
             Args&&... args
         )
         {
+#ifndef NDEBUG
+            if (s_logger == nullptr)
+            {
+                RNGO_ASSERT(false && "Logger has not been initialized");
+            }
+#endif
+
             spdlog::source_loc loc{
                 location.file_name(), static_cast<int>(location.line()), location.function_name()
             };
 
-            // TODO: What happens if logger is not yet initialized?
-            auto& logger = GetInstance().m_logger;
-
             const auto logLevel = RNGOLevelToSPDLogLevel(level);
-            logger.log(loc, logLevel, fmt, std::forward<Args>(args)...);
+            s_logger->log(loc, logLevel, fmt, std::forward<Args>(args)...);
         }
 
-    public:
-        void AttachSink(std::shared_ptr<spdlog::sinks::sink> sink);
-
     private:
-        // TODO: Should this be moved to a static context? To avoid having to go
-        // through the singleton every time?
-        spdlog::logger m_logger;
+        static std::unique_ptr<spdlog::logger> s_logger;
     };
-}  // namespace rngo
+}
 
 #define RNGO_LOG(level, ...) rngo::Logger::Log(std::source_location::current(), level, __VA_ARGS__)

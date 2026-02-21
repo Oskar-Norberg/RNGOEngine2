@@ -8,33 +8,30 @@
 
 namespace rngo
 {
+    constexpr auto LoggerName = "RNGOLog";
     constexpr auto LOG_PATH = "Logs/RNGOEngine.log";
     constexpr auto MAX_NR_LOG_FILES = 4;
 
-    Logger::Logger()
-        : Singleton<Logger>(this),
-          m_logger(
-              "RNGOEngine Log",
-              {
-                  // Automatically log to file.
-                  std::make_shared<spdlog::sinks::daily_file_sink<std::mutex>>(
-                      LOG_PATH, 0, 0, false, MAX_NR_LOG_FILES
-                  ),
-              }
-          )
-    {
-        m_logger.set_level(spdlog::level::debug);
+    std::unique_ptr<spdlog::logger> Logger::s_logger{nullptr};
 
-        m_logger.info("Logger initialized");
+    void Logger::InitializeLogger()
+    {
+        s_logger = std::make_unique<spdlog::logger>(
+            LoggerName,
+            // Automatically log to file.
+            std::make_shared<spdlog::sinks::daily_file_sink<std::mutex>>(
+                LOG_PATH, 0, 0, false, MAX_NR_LOG_FILES
+            )
+        );
+        // TODO: This should definitely not be set to debug in a release-build.
+        s_logger->set_level(spdlog::level::debug);
+
+        RNGO_LOG(LogLevel::Debug, "Logger Initialized");
     }
 
-    Logger::~Logger()
+    void Logger::ExitLogger()
     {
-        m_logger.info("Logger Exiting");
-    }
-
-    void Logger::AttachSink(std::shared_ptr<spdlog::sinks::sink> sink)
-    {
-        m_logger.sinks().emplace_back(sink);
+        RNGO_LOG(LogLevel::Debug, "Logger Exiting...");
+        s_logger->flush();
     }
 }
