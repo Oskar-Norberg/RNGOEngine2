@@ -5,5 +5,6 @@ add_library(${ECS_PROJECT_NAME} INTERFACE
 )
 target_include_directories(${ECS_PROJECT_NAME} INTERFACE include)
 target_link_libraries(${ECS_PROJECT_NAME} INTERFACE
+        ${CORE_UTILS}
         EnTT::EnTT
 )

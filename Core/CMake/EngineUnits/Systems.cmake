@@ -5,6 +5,7 @@ add_library(${SYSTEMS_PROJECT_NAME} INTERFACE
 )
 target_include_directories(${SYSTEMS_PROJECT_NAME} INTERFACE include)
 target_link_libraries(${SYSTEMS_PROJECT_NAME} INTERFACE
+        ${CORE_UTILS}
         ${ECS_PROJECT_NAME}
 )
 

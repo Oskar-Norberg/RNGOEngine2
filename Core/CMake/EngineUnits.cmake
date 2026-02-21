@@ -1,5 +1,14 @@
 include(CMake/EngineUnits/Utilities.cmake)
 include(CMake/EngineUnits/Logging.cmake)
+
+# Interface to include to inherit all utils
+set(CORE_UTILS RNGOEngine_CoreUtils)
+add_library(${CORE_UTILS} INTERFACE)
+target_link_libraries(${CORE_UTILS} INTERFACE
+        ${LOGGING_PROJECT_NAME}
+        ${UTILITIES_PROJECT_NAME}
+)
+
 include(CMake/EngineUnits/Threading.cmake)
 include(CMake/EngineUnits/Events.cmake)
 

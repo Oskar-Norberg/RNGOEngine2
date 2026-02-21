@@ -8,7 +8,5 @@ add_library(${WINDOW_PROJECT_NAME} STATIC
 target_include_directories(${WINDOW_PROJECT_NAME} PUBLIC include)
 target_link_libraries(${WINDOW_PROJECT_NAME} PUBLIC glad glfw)
 target_link_libraries(${WINDOW_PROJECT_NAME} PUBLIC
-        ${LOGGING_PROJECT_NAME}
-        ${PROFILING_PROJECT_NAME}
-        ${UTILITIES_PROJECT_NAME}
+        ${CORE_UTILS}
 )

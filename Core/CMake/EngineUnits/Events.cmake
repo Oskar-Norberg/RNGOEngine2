@@ -7,7 +7,5 @@ add_library(${EVENTS_PROJECT_NAME} STATIC
 )
 target_include_directories(${EVENTS_PROJECT_NAME} PUBLIC include)
 target_link_libraries(${EVENTS_PROJECT_NAME} PUBLIC
-        ${LOGGING_PROJECT_NAME}
-        ${PROFILING_PROJECT_NAME}
-        ${UTILITIES_PROJECT_NAME}
+        ${CORE_UTILS}
 )
