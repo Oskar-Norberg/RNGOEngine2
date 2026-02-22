@@ -63,6 +63,7 @@ namespace rngo
 
     void GLFWWindow::LoadGLAD()
     {
+        // TODO: Switch based on selected rendering api.
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
         {
             RNGO_FATAL_ERROR("Failed to initialize GLAD.");

@@ -20,6 +20,7 @@ include(CMake/EngineUnits/Systems.cmake)
 include(CMake/EngineUnits/Components.cmake)
 
 include(CMake/EngineUnits/Window.cmake)
+include(CMake/EngineUnits/RHI.cmake)
 include(CMake/EngineUnits/RenderingAPI.cmake)
 
 list(APPEND ALL_ENGINE_UNITS
@@ -36,6 +37,7 @@ list(APPEND ALL_ENGINE_UNITS
         ${COMPONENTS_PROJECT_NAME}
 
         ${WINDOW_PROJECT_NAME}
+        ${RHI_PROJECT_NAME}
         ${RENDERING_API_PROJECT_NAME}
 )
 
