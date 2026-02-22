@@ -28,8 +28,10 @@ namespace rngo
     public:
         void LoadGLAD() override;
         void MakeCurrentContext() override;
+        RenderType GetRenderType() override;
 
     private:
         GLFWwindow* m_rawWindow;
+        RenderType m_renderType;
     };
 }

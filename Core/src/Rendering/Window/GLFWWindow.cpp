@@ -13,6 +13,7 @@
 namespace rngo
 {
     GLFWWindow::GLFWWindow(const WindowConfig& config)
+        : m_renderType(config.RenderType)
     {
         glfwInit();
 
@@ -63,15 +64,27 @@ namespace rngo
 
     void GLFWWindow::LoadGLAD()
     {
-        // TODO: Switch based on selected rendering api.
-        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+        if (std::holds_alternative<OpenGLWindowConfig>(m_renderType))
         {
-            RNGO_FATAL_ERROR("Failed to initialize GLAD.");
+            const auto& openGLConfig = std::get<OpenGLWindowConfig>(m_renderType);
+            if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+            {
+                RNGO_FATAL_ERROR("Failed to initialize GLAD.");
+            }
+        }
+        else
+        {
+            RNGO_FATAL_ERROR("Unsupported RenderType.");
         }
     }
 
     void GLFWWindow::MakeCurrentContext()
     {
         glfwMakeContextCurrent(m_rawWindow);
+    }
+
+    RenderType GLFWWindow::GetRenderType()
+    {
+        return m_renderType;
     }
 }

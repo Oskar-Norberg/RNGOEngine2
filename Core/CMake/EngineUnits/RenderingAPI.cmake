@@ -6,4 +6,5 @@ add_library(${RENDERING_API_PROJECT_NAME} STATIC
 target_include_directories(${RENDERING_API_PROJECT_NAME} PUBLIC include)
 target_link_libraries(${RENDERING_API_PROJECT_NAME} PUBLIC
         ${CORE_UTILS}
+        ${RHI_PROJECT_NAME}
 )

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "RHI/IRHI.h"
 #include "Utilities/Threading/Runnable.h"
 #include "Window/IWindow.h"
 
@@ -22,5 +23,6 @@ namespace rngo
 
     private:
         IWindow* m_window;
+        std::unique_ptr<IRHI> m_rhi;
     };
 }
