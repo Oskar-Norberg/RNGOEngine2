@@ -41,7 +41,8 @@ namespace rngo
     {
         InvalidAttribute,
         InvalidAttributeIndex,
-        UnsupportedAmountOfAttributes
+        UnsupportedAmountOfAttributes,
+        UnsupportedAttributeType
     };
 
     struct VertexArrayObjectCreationError

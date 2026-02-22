@@ -8,8 +8,11 @@ add_library(${RHI_PROJECT_NAME} STATIC
         include/Rendering/RHI/Shader.h
 
         include/Rendering/RHI/IRHI.h
+
+        include/Rendering/RHI/Implementation/OpenGLRHI.h
+        src/Rendering/RHI/Implementation/OpenGLRHI.cpp
 )
 target_include_directories(${RHI_PROJECT_NAME} PUBLIC include)
 target_link_libraries(${RHI_PROJECT_NAME} PUBLIC
-        ${CORE_UTILS}
+        ${CORE_UTILS} glad
 )

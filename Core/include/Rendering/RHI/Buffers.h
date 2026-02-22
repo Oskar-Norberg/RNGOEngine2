@@ -37,6 +37,7 @@ namespace rngo
     enum class BufferCreationErrorCode
     {
         OutOfMemory,
+        UnsupportedBufferType
     };
 
     struct BufferCreationError

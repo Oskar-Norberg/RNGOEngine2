@@ -9,8 +9,8 @@
 #include <string_view>
 
 #include "Buffers.h"
-#include "ClearTarget.h"
-#include "RenderFeature.h"
+#include "ClearTargetBit.h"
+#include "RenderFeatureBit.h"
 #include "Shader.h"
 #include "VertexArrayObject.h"
 
@@ -27,13 +27,13 @@ namespace rngo
         // Setup
     public:
         virtual void SetViewportSize(int width, int height) = 0;
-        virtual void EnableFeatures(RenderFeature features) = 0;
-        virtual void DisableFeatures(RenderFeature features) = 0;
+        virtual void EnableFeatures(RenderFeatureBit features) = 0;
+        virtual void DisableFeatures(RenderFeatureBit features) = 0;
 
         // Clearing
     public:
-        virtual void SetClearColor(std::span<float, 3> color) = 0;
-        virtual void ClearTarget(ClearTarget clearTarget) = 0;
+        virtual void SetClearColor(std::span<const float, 4> color) = 0;
+        virtual void ClearTarget(ClearTargetBit clearTarget) = 0;
 
         // Drawing
     public:
@@ -41,9 +41,7 @@ namespace rngo
 
         // Buffer
     public:
-        virtual std::expected<Buffer, BufferCreationError> CreateBuffer(
-            const BufferDescription& description
-        ) = 0;
+        virtual std::expected<Buffer, BufferCreationError> CreateBuffer(const BufferDescription& description) = 0;
         virtual void DestroyBuffer(const Buffer& buffer) = 0;
         virtual void BindBuffer(const Buffer& buffer) = 0;
 
@@ -56,7 +54,7 @@ namespace rngo
         // Shader
     public:
         virtual std::expected<Shader, ShaderCreationError> CreateShader(std::string_view vertexShader, std::string_view fragmentShader) = 0;
-        virtual void DestroyShader(const Shader& buffer) = 0;
-        virtual void BindShader(const Shader& buffer) = 0;
+        virtual void DestroyShader(const Shader& shader) = 0;
+        virtual void BindShader(const Shader& shader) = 0;
     };
 }

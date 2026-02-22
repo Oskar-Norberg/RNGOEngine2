@@ -8,11 +8,12 @@
 
 namespace rngo
 {
-    enum class RenderFeature
+    enum class RenderFeatureBit
     {
+        None = 0,
         DepthTesting = 1 << 0,
         Blending = 1 << 1,
         BackFaceCulling = 1 << 2,
     };
-    DEFINE_ENUM_CLASS_BITWISE_OPERATORS(RenderFeature)
+    DEFINE_ENUM_CLASS_BITWISE_OPERATORS(RenderFeatureBit)
 }
