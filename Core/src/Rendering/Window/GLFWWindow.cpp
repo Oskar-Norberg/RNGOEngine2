@@ -4,6 +4,7 @@
 
 #include "Rendering/Window/GLFWWindow.h"
 
+#include "Error/Error.h"
 #include "Events/EngineEvents.h"
 #include "Events/EventQueue.h"
 #include "Logging/Logger.h"
@@ -26,8 +27,7 @@ namespace rngo
         }
         else
         {
-            RNGO_ASSERT(false && "Unsupported Render Type");
-            // TODO: Throw irrecoverable error, going into UB land
+            RNGO_FATAL_ERROR("Unsupported Render Type");
         }
 
         m_rawWindow = glfwCreateWindow(config.Width, config.Height, config.Title.data(), nullptr, nullptr);
@@ -35,9 +35,7 @@ namespace rngo
         {
             RNGO_LOG(LogLevel::Critical, "Failed to create GLFW window.");
             glfwTerminate();
-            RNGO_ASSERT(false && "Failed to create GLFW window.");
-            // TODO: Throw Irrecoverable error
-            // TODO: UB
+            RNGO_FATAL_ERROR("Unsupported Render Type");
         }
 
         // TODO: Set VSync
@@ -67,9 +65,7 @@ namespace rngo
     {
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
         {
-            RNGO_ASSERT(false && "Failed to initialize GLAD.");
-            // TODO: Throw Irrecoverable error
-            // TODO: UB
+            RNGO_FATAL_ERROR("Failed to initialize GLAD.");
         }
     }
 

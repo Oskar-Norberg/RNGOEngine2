@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Utilities/Runnable.h"
+#include "Utilities/Threading/Runnable.h"
 #include "Window/IWindow.h"
 
 namespace rngo

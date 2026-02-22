@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "Application.h"
+#include "Error/Error.h"
 #include "Logging/Logger.h"
 
 namespace rngo
@@ -15,13 +16,23 @@ namespace rngo
 
     inline int Main(const int argc, char** argv)
     {
+        int success = 0;
+
         Logger::InitializeLogger();
 
-        const auto app = CreateApplication();
-        app->Run();
+        try
+        {
+            const auto app = CreateApplication();
+            app->Run();
+        }
+        catch (FatalEngineError& e)
+        {
+            success = 1;
+            RNGO_LOG(LogLevel::Critical, "{}", e.what());
+        }
 
         Logger::ExitLogger();
 
-        return 0;
+        return success;
     }
 }

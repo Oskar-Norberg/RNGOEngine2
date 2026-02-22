@@ -31,8 +31,6 @@ namespace rngo
         void Run();
 
     protected:
-        bool m_isRunning;
-
         EventQueue m_eventQueue;
         std::unique_ptr<IWindow> m_window;
         std::unique_ptr<RenderRunnable> m_renderRunnable;
