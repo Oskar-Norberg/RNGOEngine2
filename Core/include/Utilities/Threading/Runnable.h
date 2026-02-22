@@ -5,25 +5,24 @@
 #pragma once
 
 #include <atomic>
+#include <mutex>
 
 #include "Utilities/RNGOAsserts.h"
 
 namespace rngo
 {
     // A base class for any task that can be run on a separate thread or on the main thread.
-    // TODO: Decide if Initialize should be called from run or not. Currently suffers from two-phase initialization.
     class Runnable
     {
     public:
         virtual ~Runnable() = default;
 
-        // Non-blocking, Multi-threaded API
+        // Blocking API. Will run until stopped.
     public:
         void Run()
         {
-            Initialize();
+            EnsureInitialized();
 
-            m_isRunning = true;
             while (m_isRunning)
             {
                 Tick();
@@ -32,25 +31,24 @@ namespace rngo
             ExitInternal();
         }
 
-        // Blocking, Single-Threaded API
+        // Non-blocking, tick once API.
     public:
         void Initialize()
         {
-            m_isInitialized = true;
             InitializeInternal();
         }
 
         void Tick()
         {
-            RNGO_ASSERT(m_isInitialized && "Tried to Tick uninitialized Runnable");
+            EnsureInitialized();
             TickInternal();
         }
 
-        // Shared
+        // Shared API
     public:
         void Stop()
         {
-            m_isRunning = false;
+            EnsureExited();
         }
 
     protected:
@@ -65,7 +63,34 @@ namespace rngo
         }
 
     protected:
-        std::atomic<bool> m_isInitialized = false;
-        std::atomic<bool> m_isRunning = false;
+        std::atomic<bool> m_isRunning{false};
+
+        std::once_flag m_initFlag;
+        std::once_flag m_exitFlag;
+
+    private:
+        void EnsureInitialized()
+        {
+            std::call_once(
+                m_initFlag,
+                [this]()
+                {
+                    InitializeInternal();
+                    m_isRunning = true;
+                }
+            );
+        }
+
+        void EnsureExited()
+        {
+            std::call_once(
+                m_exitFlag,
+                [this]()
+                {
+                    ExitInternal();
+                    m_isRunning = false;
+                }
+            );
+        }
     };
 }
