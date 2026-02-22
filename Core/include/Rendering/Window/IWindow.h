@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <string_view>
 #include <variant>
 
 namespace rngo

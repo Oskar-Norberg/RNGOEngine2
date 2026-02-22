@@ -5,13 +5,13 @@
 #pragma once
 
 #include <atomic>
-#include <thread>
 
-#include "RNGOAsserts.h"
+#include "Utilities/RNGOAsserts.h"
 
 namespace rngo
 {
     // A base class for any task that can be run on a separate thread or on the main thread.
+    // TODO: Decide if Initialize should be called from run or not. Currently suffers from two-phase initialization.
     class Runnable
     {
     public:

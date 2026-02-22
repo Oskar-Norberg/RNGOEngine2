@@ -6,13 +6,15 @@
 
 #include <chrono>
 
+#include "Error/Error.h"
 #include "Events/EngineEvents.h"
+#include "Logging/Logger.h"
 #include "Rendering/Window/GLFWWindow.h"
+#include "Utilities/Threading/SharedExecutionContext.h"
 
 namespace rngo
 {
     Application::Application(const ApplicationConfig& config)
-        : m_isRunning(false)
     {
         WindowConfig windowConfig{
             .Title = config.Title,
@@ -30,13 +32,28 @@ namespace rngo
 
     void Application::Run()
     {
-        m_isRunning = true;
+        SharedExecutionContext executionContext{true};
 
-        std::thread renderThread(&RenderRunnable::Run, m_renderRunnable.get());
+        auto& renderRunnable = *m_renderRunnable;
+        std::thread renderThread(
+            [&renderRunnable, &executionContext]()
+            {
+                try
+                {
+                    renderRunnable.Run();
+                }
+                catch (FatalEngineError& e)
+                {
+                    executionContext.StopWithException(std::make_exception_ptr(e));
+                }
+
+                renderRunnable.Stop();
+            }
+        );
 
         // TODO: Use a fixed time-step for systems.
         auto lastFrame = std::chrono::high_resolution_clock::now();
-        while (m_isRunning)
+        while (executionContext.IsRunning())
         {
             const float deltaTime =
                 std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - lastFrame).count();
@@ -51,12 +68,17 @@ namespace rngo
             {
                 if (event->GetType() == EventType::ExitRequested)
                 {
-                    m_isRunning = false;
+                    executionContext.Stop();
                 }
             }
         }
 
         m_renderRunnable->Stop();
         renderThread.join();
+
+        if (const auto& exceptionPointer = executionContext.GetException())
+        {
+            std::rethrow_exception(exceptionPointer);
+        }
     }
 }
