@@ -9,6 +9,9 @@
 
 #include "Asset/Asset.h"
 #include "Asset/AssetLoader/Importers/AssetImporter.h"
+#include "Importers/ModelImporter.h"
+#include "Importers/ShaderImporter.h"
+#include "Importers/TextureImporter.h"
 
 namespace rngo
 {
@@ -42,15 +45,7 @@ namespace rngo
         AssetDatabase& m_assetDatabase;
         AssetRegistry& m_assetRegistry;
 
-        // TODO: This should defo be a tuple, but tuples look so shit to iterate over :sob:
-        std::array<std::unique_ptr<AssetImporter>, 3> m_importers{
-            nullptr
-            /*
-            std::make_unique<TextureImporter>(),
-            std::make_unique<ModelImporter>(),
-            std::make_unique<ShaderImporter>(),
-            */
-        };
+        std::tuple<TextureImporter, ModelImporter, ShaderImporter> m_importers;
 
     private:
         AssetImporter* GetAssetImporterForExtension(std::string_view extension);

@@ -13,6 +13,7 @@ namespace rngo
         Model,
         Texture,
         Shader,
+        // Material
     };
 
     enum class AssetState

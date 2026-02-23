@@ -22,6 +22,6 @@ namespace rngo
     public:
         virtual std::shared_ptr<AssetMetadata> CreateTypedMetadataInstance(AssetHandle handle, std::filesystem::path relativePath) const = 0;
         virtual AssetType GetAssociatedType() const = 0;
-        virtual std::span<std::string_view> GetAssociatedExtensions() const = 0;
+        virtual std::span<const std::string_view> GetAssociatedExtensions() const = 0;
     };
 }

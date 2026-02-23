@@ -13,7 +13,6 @@ namespace rngo
         const AssetFetcher& assetFetcher, AssetDatabase& assetDatabase, AssetRegistry& assetRegistry
     )
         : m_assetFetcher(assetFetcher), m_assetDatabase(assetDatabase), m_assetRegistry(assetRegistry)
-
     {
     }
 
@@ -23,7 +22,6 @@ namespace rngo
     {
         // TODO: Consider the case where /assets/grass.png and /assets/../assets/grass.png aren't evaluated as the same asset. (canonize rel-path)
 
-        // TODO: Check that it isn't already registered.
         if (const auto foundMetadataOpt = m_assetDatabase.Find(relativePath); foundMetadataOpt)
         {
             return foundMetadataOpt.value()->GetHandle();
@@ -38,7 +36,7 @@ namespace rngo
 
         const auto& fullPath = fullPathOpt.value();
         const auto assetExtension = fullPath.extension();
-        auto* importer = GetAssetImporterForExtension(assetExtension.string());
+        const auto* importer = GetAssetImporterForExtension(assetExtension.string());
 
         if (!importer)
         {
@@ -59,18 +57,30 @@ namespace rngo
 
     AssetImporter* AssetLoader::GetAssetImporterForExtension(const std::string_view extension)
     {
-        for (const auto& importer : m_importers)
-        {
-            const auto supportedExtensions = importer->GetAssociatedExtensions();
-            for (const auto supportedExtension : supportedExtensions)
-            {
-                if (extension == supportedExtension)
-                {
-                    return importer.get();
-                }
-            }
-        }
+        AssetImporter* foundImporter = nullptr;
 
-        return nullptr;
+        std::apply(
+            [&](auto&... importer)
+            {
+                ((
+                     [&]
+                     {
+                         const auto supportedExtensions = importer.GetAssociatedExtensions();
+                         for (const auto& supportedExtension : supportedExtensions)
+                         {
+                             if (extension == supportedExtension)
+                             {
+                                 foundImporter = &importer;
+                                 return;
+                             }
+                         }
+                     }()
+                 ),
+                 ...);
+            },
+            m_importers
+        );
+
+        return foundImporter;
     }
 }

@@ -12,5 +12,8 @@ namespace rngo_editor
     {
     public:
         explicit Editor(const rngo::ApplicationConfig& config);
+
+    protected:
+        void OnUpdate(float deltaTime) override;
     };
 }
