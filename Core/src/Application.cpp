@@ -24,6 +24,14 @@ namespace rngo
             .VSync = true
         };
 
+        // TODO: Ugly, move to a single AssetManager facade
+        m_assetDatabase = std::make_unique<AssetDatabase>();
+        m_assetRegistry = std::make_unique<AssetRegistry>();
+        m_assetFetcher = std::make_unique<AssetFetcher>(config.ProjectPath);
+        m_assetLoader = std::make_unique<AssetLoader>(
+            *m_assetFetcher, *m_assetDatabase, *m_assetRegistry
+        );
+
         m_window = std::make_unique<GLFWWindow>(windowConfig);
         m_renderRunnable = std::make_unique<RenderRunnable>(m_window.get());
     }
@@ -55,12 +63,12 @@ namespace rngo
         auto lastFrame = std::chrono::high_resolution_clock::now();
         while (executionContext.IsRunning())
         {
-            const float deltaTime =
-                std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - lastFrame).count();
-            lastFrame = std::chrono::high_resolution_clock::now();
+            const auto now = std::chrono::high_resolution_clock::now();
+            const float deltaTime = std::chrono::duration<float>(now - lastFrame).count();
+            lastFrame = now;
 
             m_window->PollEvents(m_eventQueue);
-            OnUpdate();
+            OnUpdate(deltaTime);
 
             // TODO: TEMPORARY DEBUGGING CODE
             const auto events = m_eventQueue.GetEvents();

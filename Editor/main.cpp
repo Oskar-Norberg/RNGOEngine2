@@ -16,6 +16,9 @@ namespace rngo
             .Title = "RNGOEditor",
             .Width = 1280,
             .Height = 720,
+            .VSync = false,
+            // NOTE: Temporary path, should be set on launching Editor
+            .ProjectPath = std::filesystem::current_path() / "EditorProject"
         };
 
         return std::make_unique<rngo_editor::Editor>(config);

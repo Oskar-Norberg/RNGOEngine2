@@ -8,7 +8,7 @@
 
 namespace rngo
 {
-    // TODO: Strongly typed class for RelativePath?
+    // TODO: Custom class for RelativePath?
 
     // Fetches paths relative to project path
     // E.g "/home/user/Project/Textures/Grass.png" would be fetched using "Textures/Grass.png".
@@ -18,10 +18,10 @@ namespace rngo
         AssetFetcher(const std::filesystem::path& projectPath);
 
         // Fetches using relative path, returns absolute path.
-        std::optional<std::filesystem::path> GetAssetPath(std::string_view relativePath);
+        std::optional<std::filesystem::path> GetAssetPath(std::string_view relativePath) const;
 
         // Gets relative path from an absolute path, nullopt if path is outside ProjectPath.
-        std::optional<std::filesystem::path> GetRelativePath(const std::filesystem::path& fullPath);
+        std::optional<std::filesystem::path> GetRelativePath(const std::filesystem::path& fullPath) const;
 
     private:
         std::filesystem::path m_projectPath;

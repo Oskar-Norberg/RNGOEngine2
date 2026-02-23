@@ -43,12 +43,11 @@ namespace rngo
         std::uint64_t m_uuid;
     };
 
-    // TODO: Move into the UUID class as a static method?
     static UUID GenerateUUID()
     {
-        static std::random_device s_randomDevice;
-        static std::mt19937_64 s_generator(s_randomDevice());
-        static std::uniform_int_distribution<uint64_t> s_distribution;
+        thread_local std::random_device s_randomDevice;
+        thread_local std::mt19937_64 s_generator(s_randomDevice());
+        thread_local std::uniform_int_distribution<uint64_t> s_distribution;
 
         return UUID(s_distribution(s_generator));
     }
@@ -57,15 +56,10 @@ namespace rngo
     {
         return uuid.GetValue() != 0;
     }
-}
 
-// Hash Function for UUIDs
-namespace std
-{
-    template<>
-    struct hash<rngo::UUID>
+    struct UUIDHasher
     {
-        size_t operator()(const rngo::UUID& uuid) const noexcept
+        size_t operator()(const UUID& uuid) const noexcept
         {
             return std::hash<uint64_t>{}(static_cast<uint64_t>(uuid));
         }

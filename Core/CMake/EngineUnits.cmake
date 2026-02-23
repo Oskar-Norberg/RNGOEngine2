@@ -1,6 +1,7 @@
 include(CMake/EngineUnits/Utilities.cmake)
 include(CMake/EngineUnits/Logging.cmake)
 include(CMake/EngineUnits/Error.cmake)
+include(CMake/EngineUnits/Data.cmake)
 
 # Interface to include to inherit all utils
 set(CORE_UTILS RNGOEngine_CoreUtils)
@@ -9,6 +10,7 @@ target_link_libraries(${CORE_UTILS} INTERFACE
         ${LOGGING_PROJECT_NAME}
         ${UTILITIES_PROJECT_NAME}
         ${ERROR_PROJECT_NAME}
+        ${DATA_PROJECT_NAME}
 )
 
 include(CMake/EngineUnits/Threading.cmake)

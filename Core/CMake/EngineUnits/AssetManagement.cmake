@@ -1,6 +1,12 @@
 set(ASSET_MANAGEMENT_PROJECT_NAME RNGOEngine_AssetManagement)
 add_library(${ASSET_MANAGEMENT_PROJECT_NAME} STATIC
         include/Asset/Asset.h
+        include/Asset/AssetMetadata.h
+
+        include/Asset/AssetLoader/AssetLoader.h
+        src/Asset/AssetLoader/AssetLoader.cpp
+        # AssetImporters
+        include/Asset/AssetLoader/Importers/AssetImporter.h
 
         include/Asset/AssetFetcher/AssetFetcher.h
         src/Asset/AssetFetcher/AssetFetcher.cpp

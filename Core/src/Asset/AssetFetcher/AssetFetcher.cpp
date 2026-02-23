@@ -11,7 +11,7 @@ namespace rngo
     {
     }
 
-    std::optional<std::filesystem::path> AssetFetcher::GetAssetPath(const std::string_view relativePath)
+    std::optional<std::filesystem::path> AssetFetcher::GetAssetPath(const std::string_view relativePath) const
     {
         const auto fullPath = m_projectPath / relativePath;
         if (!std::filesystem::exists(fullPath))
@@ -22,7 +22,9 @@ namespace rngo
         return fullPath;
     }
 
-    std::optional<std::filesystem::path> AssetFetcher::GetRelativePath(const std::filesystem::path& fullPath)
+    std::optional<std::filesystem::path> AssetFetcher::GetRelativePath(
+        const std::filesystem::path& fullPath
+    ) const
     {
         const auto canonicalFullPath = std::filesystem::weakly_canonical(fullPath);
         const auto canonicalProjectPath = std::filesystem::weakly_canonical(m_projectPath);
