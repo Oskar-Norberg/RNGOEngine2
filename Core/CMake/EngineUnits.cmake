@@ -19,6 +19,8 @@ include(CMake/EngineUnits/Systems.cmake)
 
 include(CMake/EngineUnits/Components.cmake)
 
+include(CMake/EngineUnits/AssetManagement.cmake)
+
 include(CMake/EngineUnits/Window.cmake)
 include(CMake/EngineUnits/RHI.cmake)
 include(CMake/EngineUnits/RenderingAPI.cmake)
@@ -35,6 +37,8 @@ list(APPEND ALL_ENGINE_UNITS
         ${SYSTEMS_PROJECT_NAME}
 
         ${COMPONENTS_PROJECT_NAME}
+
+        ${ASSET_MANAGEMENT_PROJECT_NAME}
 
         ${WINDOW_PROJECT_NAME}
         ${RHI_PROJECT_NAME}
