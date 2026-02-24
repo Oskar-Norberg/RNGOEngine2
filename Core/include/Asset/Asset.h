@@ -21,6 +21,7 @@ namespace rngo
         Invalid,
         Loading,
         Ready,
+        Consumed
     };
 
     class Asset

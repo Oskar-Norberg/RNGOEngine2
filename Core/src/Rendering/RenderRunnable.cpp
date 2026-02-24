@@ -9,8 +9,8 @@
 
 namespace rngo
 {
-    RenderRunnable::RenderRunnable(IWindow* window)
-        : m_window(window)
+    RenderRunnable::RenderRunnable(AssetRegistry& registry, IWindow* window)
+        : m_assetRegistry(registry), m_window(window)
     {
     }
 
@@ -36,6 +36,9 @@ namespace rngo
     {
         Runnable::TickInternal();
 
+        // Consume Loaded Resources
+        ConsumeReadyResources();
+
         // Render Loop
         std::array clearColor = {0.0f, 0.5f, 0.5f, 1.0f};
         m_rhi->SetClearColor(clearColor);
@@ -47,5 +50,30 @@ namespace rngo
     void RenderRunnable::ExitInternal()
     {
         Runnable::ExitInternal();
+    }
+
+    void RenderRunnable::ConsumeReadyResources()
+    {
+        // For now, just process all the ready assets.
+        // In the future, should probably have an adjustable amount of MODELS_TO_PROCESS, SHADERS_TO_PROCESS, etc etc.
+        const auto readyAssets = m_assetRegistry.GetAllReady();
+        for (const auto& readyAsset : readyAssets)
+        {
+            if (readyAsset->GetType() == AssetType::Texture)
+            {
+                readyAsset->SetState(AssetState::Consumed);
+                // TODO:
+            }
+            if (readyAsset->GetType() == AssetType::Model)
+            {
+                readyAsset->SetState(AssetState::Consumed);
+                // TODO:
+            }
+            if (readyAsset->GetType() == AssetType::Shader)
+            {
+                readyAsset->SetState(AssetState::Consumed);
+                // TODO:
+            }
+        }
     }
 }

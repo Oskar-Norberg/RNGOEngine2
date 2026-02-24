@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Asset/AssetRegistry/AssetRegistry.h"
 #include "RHI/IRHI.h"
 #include "Utilities/Threading/Runnable.h"
 #include "Window/IWindow.h"
@@ -14,7 +15,7 @@ namespace rngo
     {
     public:
         // TODO: Pass Window by weak_ptr perhaps?
-        explicit RenderRunnable(IWindow* window);
+        explicit RenderRunnable(AssetRegistry& registry, IWindow* window);
 
     protected:
         void InitializeInternal() override;
@@ -22,7 +23,11 @@ namespace rngo
         void ExitInternal() override;
 
     private:
+        AssetRegistry& m_assetRegistry;
         IWindow* m_window;
         std::unique_ptr<IRHI> m_rhi;
+
+    private:
+        void ConsumeReadyResources();
     };
 }

@@ -33,7 +33,7 @@ namespace rngo
         );
 
         m_window = std::make_unique<GLFWWindow>(windowConfig);
-        m_renderRunnable = std::make_unique<RenderRunnable>(m_window.get());
+        m_renderRunnable = std::make_unique<RenderRunnable>(*m_assetRegistry, m_window.get());
     }
 
     Application::~Application() = default;

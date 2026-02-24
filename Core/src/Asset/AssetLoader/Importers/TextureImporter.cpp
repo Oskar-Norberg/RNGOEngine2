@@ -4,16 +4,20 @@
 
 #include "Asset/AssetLoader/Importers/TextureImporter.h"
 
+#include <iostream>
+
 #include "Asset/AssetTypes/TextureAsset.h"
 
 namespace rngo
 {
-    void TextureImporter::LoadFromDisk(std::shared_ptr<AssetMetadata> metadata)
+    void TextureImporter::LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata)
     {
+        std::cout << "pretend this is loading from the disk" << std::endl;
+
+        const auto texture = std::make_shared<TextureAsset>(AssetType::Texture, AssetState::Ready);
+        registry.Insert(metadata->GetHandle(), texture);
     }
-    void TextureImporter::FinalizeLoad(ThreadType threadType)
-    {
-    }
+
     std::shared_ptr<AssetMetadata> TextureImporter::CreateTypedMetadataInstance(
         AssetHandle handle, std::filesystem::path relativePath
     ) const

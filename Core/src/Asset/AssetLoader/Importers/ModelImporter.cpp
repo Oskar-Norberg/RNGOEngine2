@@ -8,14 +8,8 @@
 
 namespace rngo
 {
-    void ModelImporter::LoadFromDisk(std::shared_ptr<AssetMetadata> metadata)
+    void ModelImporter::LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata)
     {
-        // TODO:
-    }
-
-    void ModelImporter::FinalizeLoad(ThreadType threadType)
-    {
-        // TODO:
     }
 
     std::shared_ptr<AssetMetadata> ModelImporter::CreateTypedMetadataInstance(

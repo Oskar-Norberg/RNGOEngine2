@@ -24,6 +24,12 @@ namespace rngo_editor
                       << std::to_underlying(importResult->Type) << std::endl;
 
             m_assetLoader->RequestLoad(importResult.value());
+            const auto assetOpt = m_assetRegistry->GetConsumed(importResult.value());
+
+            if (assetOpt)
+            {
+                std::cout << "Found Asset: " << std::to_underlying(assetOpt.value()->GetType()) << std::endl;
+            }
         }
         else
         {

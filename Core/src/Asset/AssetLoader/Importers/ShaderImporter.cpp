@@ -7,11 +7,7 @@
 
 namespace rngo
 {
-    void ShaderImporter::LoadFromDisk(std::shared_ptr<AssetMetadata> metadata)
-    {
-    }
-
-    void ShaderImporter::FinalizeLoad(ThreadType threadType)
+    void ShaderImporter::LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata)
     {
     }
 

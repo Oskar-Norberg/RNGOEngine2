@@ -7,6 +7,7 @@
 #include <filesystem>
 
 #include "Asset/AssetMetadata.h"
+#include "Asset/AssetRegistry/AssetRegistry.h"
 #include "Data/ThreadType.h"
 
 namespace rngo
@@ -16,8 +17,7 @@ namespace rngo
     public:
         virtual ~AssetImporter() = default;
 
-        virtual void LoadFromDisk(std::shared_ptr<AssetMetadata> metadata) = 0;
-        virtual void FinalizeLoad(ThreadType threadType) = 0;
+        virtual void LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata) = 0;
 
     public:
         virtual std::shared_ptr<AssetMetadata> CreateTypedMetadataInstance(AssetHandle handle, std::filesystem::path relativePath) const = 0;

@@ -8,6 +8,15 @@
 
 namespace rngo
 {
+    class TextureAsset : public Asset
+    {
+    public:
+        TextureAsset(const AssetType type, const AssetState state)
+            : Asset(type, state)
+        {
+        }
+    };
+
     class TextureAssetMetadata : public AssetMetadata
     {
     public:

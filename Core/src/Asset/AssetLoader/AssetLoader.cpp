@@ -4,6 +4,8 @@
 
 #include "Asset/AssetLoader/AssetLoader.h"
 
+#include <future>
+
 #include "Asset/AssetDatabase/AssetDatabase.h"
 #include "Asset/AssetFetcher/AssetFetcher.h"
 #include "Error/Error.h"
@@ -55,6 +57,17 @@ namespace rngo
 
     void AssetLoader::RequestLoad(const AssetHandle& asset)
     {
+        // Skip already loaded/loading assets.
+        const auto assetOpt = m_assetRegistry.Get(asset);
+        if (assetOpt)
+        {
+            const auto assetState = assetOpt.value()->GetState();
+            if (assetState != AssetState::Invalid)
+            {
+                return;
+            }
+        }
+
         auto* importerPtr = GetAssetImporterForType(asset.Type);
 
         if (!importerPtr)
@@ -79,7 +92,11 @@ namespace rngo
         auto& metadata = metadataOpt.value();
         auto& importer = *importerPtr;
 
-        importer.LoadFromDisk(metadata);
+        // TODO: Use a proper job-system/thread-pool
+        // NOTE: Returns void, so safely discard this
+        const auto future = std::async(
+            &AssetImporter::LoadFromDisk, importerPtr, std::ref(m_assetRegistry), std::ref(metadata)
+        );
     }
 
     AssetImporter* AssetLoader::GetAssetImporterForExtension(const std::string_view extension)
