@@ -6,6 +6,8 @@
 
 #include "Asset/AssetDatabase/AssetDatabase.h"
 #include "Asset/AssetFetcher/AssetFetcher.h"
+#include "Error/Error.h"
+#include "Logging/Logger.h"
 
 namespace rngo
 {
@@ -51,8 +53,33 @@ namespace rngo
         return handle;
     }
 
-    void AssetLoader::RequestLoad(AssetHandle asset)
+    void AssetLoader::RequestLoad(const AssetHandle& asset)
     {
+        auto* importerPtr = GetAssetImporterForType(asset.Type);
+
+        if (!importerPtr)
+        {
+            RNGO_LOG(
+                LogLevel::Critical, "Tried to import AssetHandle with invalid type: UUID({}), Type({})",
+                asset.UUID.GetValue(), std::to_underlying(asset.Type)
+            );
+            return;
+        }
+
+        const auto metadataOpt = m_assetDatabase.Get(asset);
+        if (!metadataOpt)
+        {
+            RNGO_LOG(
+                LogLevel::Critical, "Tried to import AssetHandle with invalid handle: UUID({}), Type({})",
+                asset.UUID.GetValue(), std::to_underlying(asset.Type)
+            );
+            return;
+        }
+
+        auto& metadata = metadataOpt.value();
+        auto& importer = *importerPtr;
+
+        importer.LoadFromDisk(metadata);
     }
 
     AssetImporter* AssetLoader::GetAssetImporterForExtension(const std::string_view extension)
@@ -73,6 +100,32 @@ namespace rngo
                                  foundImporter = &importer;
                                  return;
                              }
+                         }
+                     }()
+                 ),
+                 ...);
+            },
+            m_importers
+        );
+
+        return foundImporter;
+    }
+
+    AssetImporter* AssetLoader::GetAssetImporterForType(AssetType type)
+    {
+        // This should probably be cached somewhere.
+        AssetImporter* foundImporter = nullptr;
+
+        std::apply(
+            [&](auto&... importer)
+            {
+                ((
+                     [&]
+                     {
+                         if (importer.GetAssociatedType() == type)
+                         {
+                             foundImporter = &importer;
+                             return;
                          }
                      }()
                  ),

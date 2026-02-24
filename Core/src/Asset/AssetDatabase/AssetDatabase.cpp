@@ -12,6 +12,16 @@ namespace rngo
         m_relativePathToMetadata.insert(std::make_pair(metadata->GetRelativePath(), metadata));
     }
 
+    std::optional<std::shared_ptr<AssetMetadata>> AssetDatabase::Get(const AssetHandle& handle)
+    {
+        if (const auto it = m_handleToMetadata.find(handle); it != m_handleToMetadata.end())
+        {
+            return it->second;
+        }
+
+        return std::nullopt;
+    }
+
     std::optional<std::shared_ptr<AssetMetadata>> AssetDatabase::Find(
         const std::filesystem::path& relativePath
     )

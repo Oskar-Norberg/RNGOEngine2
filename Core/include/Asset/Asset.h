@@ -33,6 +33,28 @@ namespace rngo
 
         virtual ~Asset() = default;
 
+    public:
+        AssetType GetType() const
+        {
+            return m_type;
+        }
+
+        void SetType(const AssetType type)
+        {
+            m_type = type;
+        }
+
+    public:
+        AssetState GetState() const
+        {
+            return m_state;
+        }
+
+        void SetState(const AssetState state)
+        {
+            m_state = state;
+        }
+
     private:
         AssetType m_type;
         AssetState m_state;

@@ -22,6 +22,8 @@ namespace rngo_editor
         {
             std::cout << "Successfully imported: " << importResult->UUID.GetValue() << " "
                       << std::to_underlying(importResult->Type) << std::endl;
+
+            m_assetLoader->RequestLoad(importResult.value());
         }
         else
         {

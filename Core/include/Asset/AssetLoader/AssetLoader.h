@@ -38,7 +38,7 @@ namespace rngo
     public:
         // Path relative to project root
         std::expected<AssetHandle, AssetImportErrorCode> ImportAsset(std::string_view relativePath);
-        void RequestLoad(AssetHandle asset);
+        void RequestLoad(const AssetHandle& asset);
 
     private:
         const AssetFetcher& m_assetFetcher;
@@ -49,5 +49,6 @@ namespace rngo
 
     private:
         AssetImporter* GetAssetImporterForExtension(std::string_view extension);
+        AssetImporter* GetAssetImporterForType(AssetType type);
     };
 }

@@ -28,7 +28,8 @@ namespace rngo
         catch (FatalEngineError& e)
         {
             success = 1;
-            RNGO_LOG(LogLevel::Critical, "{}", e.what());
+            RNGO_LOG(LogLevel::Critical, "Fatal Error: {}", e.what());
+            RNGO_LOG(LogLevel::Critical, "Shutting Down");
         }
 
         Logger::ExitLogger();

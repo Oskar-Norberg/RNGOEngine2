@@ -16,6 +16,7 @@ namespace rngo
     public:
         void Insert(std::shared_ptr<AssetMetadata> metadata);
 
+        std::optional<std::shared_ptr<AssetMetadata>> Get(const AssetHandle& handle);
         std::optional<std::shared_ptr<AssetMetadata>> Find(const std::filesystem::path& relativePath);
 
     private:
