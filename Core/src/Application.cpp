@@ -79,6 +79,8 @@ namespace rngo
                     executionContext.Stop();
                 }
             }
+
+            m_assetLoader->UnloadUploadedAssets();
         }
 
         m_renderRunnable->Stop();

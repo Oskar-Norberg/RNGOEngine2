@@ -31,4 +31,5 @@ add_library(${ASSET_MANAGEMENT_PROJECT_NAME} STATIC
 target_include_directories(${ASSET_MANAGEMENT_PROJECT_NAME} PUBLIC include)
 target_link_libraries(${ASSET_MANAGEMENT_PROJECT_NAME} PUBLIC
         ${CORE_UTILS}
+        ${ASSET_LOADERS_PROJECT_NAME}
 )

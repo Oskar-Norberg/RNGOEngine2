@@ -40,6 +40,9 @@ namespace rngo
         std::expected<AssetHandle, AssetImportErrorCode> ImportAsset(std::string_view relativePath);
         void RequestLoad(const AssetHandle& asset);
 
+        // TODO: TBH, I hate the entire structure around this. Reconsider!
+        void UnloadUploadedAssets();
+
     private:
         const AssetFetcher& m_assetFetcher;
         AssetDatabase& m_assetDatabase;

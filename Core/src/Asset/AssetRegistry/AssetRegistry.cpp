@@ -42,6 +42,11 @@ namespace rngo
         return GetAssetIfStateIs(handle, AssetState::Ready);
     }
 
+    std::optional<std::shared_ptr<const Asset>> AssetRegistry::GetUploaded(const AssetHandle& handle)
+    {
+        return GetAssetIfStateIs(handle, AssetState::Uploaded);
+    }
+
     std::optional<std::shared_ptr<const Asset>> AssetRegistry::GetConsumed(const AssetHandle& handle)
     {
         return GetAssetIfStateIs(handle, AssetState::Consumed);
@@ -49,18 +54,12 @@ namespace rngo
 
     std::vector<std::shared_ptr<Asset>> AssetRegistry::GetAllReady()
     {
-        std::lock_guard<std::mutex> lock(mutex);
+        return GetAllAssetOfState(AssetState::Ready);
+    }
 
-        std::vector<std::shared_ptr<Asset>> readyAssets;
-        for (const auto [handle, asset] : m_assets)
-        {
-            if (asset->GetState() == AssetState::Ready)
-            {
-                readyAssets.push_back(asset);
-            }
-        }
-
-        return readyAssets;
+    std::vector<std::shared_ptr<Asset>> AssetRegistry::GetAllUploaded()
+    {
+        return GetAllAssetOfState(AssetState::Uploaded);
     }
 
     std::optional<std::shared_ptr<const Asset>> AssetRegistry::GetAssetIfStateIs(
@@ -78,5 +77,21 @@ namespace rngo
         }
 
         return std::nullopt;
+    }
+
+    std::vector<std::shared_ptr<Asset>> AssetRegistry::GetAllAssetOfState(AssetState state)
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+
+        std::vector<std::shared_ptr<Asset>> assetsOfState;
+        for (const auto [handle, asset] : m_assets)
+        {
+            if (asset->GetState() == state)
+            {
+                assetsOfState.push_back(asset);
+            }
+        }
+
+        return assetsOfState;
     }
 }

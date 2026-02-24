@@ -6,21 +6,37 @@
 
 #include <filesystem>
 
+#include "Asset/Asset.h"
+#include "Asset/AssetFetcher/AssetFetcher.h"
 #include "Asset/AssetMetadata.h"
 #include "Asset/AssetRegistry/AssetRegistry.h"
 #include "Data/ThreadType.h"
 
 namespace rngo
 {
+    enum class AssetLoadStatusCode
+    {
+        Success,
+        AssetNotFound,
+        UnsupportedFormat,
+        MalformedAsset,
+        UnknownAsset
+    };
+
     class AssetImporter
     {
     public:
         virtual ~AssetImporter() = default;
 
-        virtual void LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata) = 0;
+        virtual AssetLoadStatusCode LoadFromDisk(
+            AssetRegistry& registry, const AssetFetcher& assetFetcher, std::shared_ptr<AssetMetadata> metadata
+        ) = 0;
+        virtual void UnloadFromDisk(std::shared_ptr<Asset> asset) = 0;
 
     public:
-        virtual std::shared_ptr<AssetMetadata> CreateTypedMetadataInstance(AssetHandle handle, std::filesystem::path relativePath) const = 0;
+        virtual std::shared_ptr<AssetMetadata> CreateTypedMetadataInstance(
+            AssetHandle handle, std::filesystem::path relativePath
+        ) const = 0;
         virtual AssetType GetAssociatedType() const = 0;
         virtual std::span<const std::string_view> GetAssociatedExtensions() const = 0;
     };

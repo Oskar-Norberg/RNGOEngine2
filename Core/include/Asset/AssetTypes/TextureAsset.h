@@ -5,16 +5,31 @@
 #pragma once
 
 #include "Asset/AssetMetadata.h"
+#include "AssetLoading/TextureLoader.h"
 
 namespace rngo
 {
     class TextureAsset : public Asset
     {
     public:
-        TextureAsset(const AssetType type, const AssetState state)
-            : Asset(type, state)
+        TextureAsset(const AssetType type, const AssetState state, texture_loader::TextureData textureData)
+            : Asset(type, state), m_textureData(std::move(textureData))
         {
         }
+
+    public:
+        const texture_loader::TextureData& GetTextureData() const
+        {
+            return m_textureData;
+        }
+
+        void SetTextureData(texture_loader::TextureData textureData)
+        {
+            m_textureData = std::move(textureData);
+        }
+
+    private:
+        texture_loader::TextureData m_textureData;
     };
 
     class TextureAssetMetadata : public AssetMetadata

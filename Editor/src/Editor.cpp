@@ -17,7 +17,7 @@ namespace rngo_editor
     {
         Application::OnUpdate(deltaTime);
 
-        const auto importResult = m_assetLoader->ImportAsset("Assets/Grass.png");
+        const auto importResult = m_assetLoader->ImportAsset("Assets/Rat.jpg");
         if (importResult)
         {
             std::cout << "Successfully imported: " << importResult->UUID.GetValue() << " "

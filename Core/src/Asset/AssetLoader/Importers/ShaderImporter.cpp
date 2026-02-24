@@ -7,7 +7,14 @@
 
 namespace rngo
 {
-    void ShaderImporter::LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata)
+    AssetLoadStatusCode ShaderImporter::LoadFromDisk(
+        AssetRegistry& registry, const AssetFetcher& assetFetcher, std::shared_ptr<AssetMetadata> metadata
+    )
+    {
+        return AssetLoadStatusCode::Success;
+    }
+
+    void ShaderImporter::UnloadFromDisk(std::shared_ptr<Asset> asset)
     {
     }
 

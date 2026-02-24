@@ -8,7 +8,14 @@
 
 namespace rngo
 {
-    void ModelImporter::LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata)
+    AssetLoadStatusCode ModelImporter::LoadFromDisk(
+        AssetRegistry& registry, const AssetFetcher& assetFetcher, std::shared_ptr<AssetMetadata> metadata
+    )
+    {
+        return AssetLoadStatusCode::Success;
+    }
+
+    void ModelImporter::UnloadFromDisk(std::shared_ptr<Asset> asset)
     {
     }
 

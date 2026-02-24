@@ -21,6 +21,7 @@ include(CMake/EngineUnits/Systems.cmake)
 
 include(CMake/EngineUnits/Components.cmake)
 
+include(CMake/EngineUnits/AssetLoaders.cmake)
 include(CMake/EngineUnits/AssetManagement.cmake)
 
 include(CMake/EngineUnits/Window.cmake)
@@ -40,6 +41,7 @@ list(APPEND ALL_ENGINE_UNITS
 
         ${COMPONENTS_PROJECT_NAME}
 
+        ${ASSET_LOADERS_PROJECT_NAME}
         ${ASSET_MANAGEMENT_PROJECT_NAME}
 
         ${WINDOW_PROJECT_NAME}

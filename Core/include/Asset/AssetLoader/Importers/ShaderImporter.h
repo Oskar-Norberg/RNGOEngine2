@@ -11,7 +11,10 @@ namespace rngo
     class ShaderImporter : public AssetImporter
     {
     public:
-        void LoadFromDisk(AssetRegistry& registry, std::shared_ptr<AssetMetadata> metadata) override;
+        AssetLoadStatusCode LoadFromDisk(
+            AssetRegistry& registry, const AssetFetcher& assetFetcher, std::shared_ptr<AssetMetadata> metadata
+        ) override;
+        void UnloadFromDisk(std::shared_ptr<Asset> asset) override;
 
         std::shared_ptr<AssetMetadata> CreateTypedMetadataInstance(
             AssetHandle handle, std::filesystem::path relativePath

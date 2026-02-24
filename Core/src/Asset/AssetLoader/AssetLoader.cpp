@@ -93,10 +93,25 @@ namespace rngo
         auto& importer = *importerPtr;
 
         // TODO: Use a proper job-system/thread-pool
-        // NOTE: Returns void, so safely discard this
+        // TODO: Actually check the future
         const auto future = std::async(
-            &AssetImporter::LoadFromDisk, importerPtr, std::ref(m_assetRegistry), std::ref(metadata)
+            &AssetImporter::LoadFromDisk, importerPtr, std::ref(m_assetRegistry), std::ref(m_assetFetcher),
+            std::ref(metadata)
         );
+    }
+
+    void AssetLoader::UnloadUploadedAssets()
+    {
+        const auto uploadedAssets = m_assetRegistry.GetAllUploaded();
+        for (const auto& asset : uploadedAssets)
+        {
+            auto* importerPtr = GetAssetImporterForType(asset->GetType());
+            if (!importerPtr)
+            {
+                RNGO_FATAL_ERROR("Cannot unload asset, no supported importer.");
+            }
+            importerPtr->UnloadFromDisk(asset);
+        }
     }
 
     AssetImporter* AssetLoader::GetAssetImporterForExtension(const std::string_view extension)

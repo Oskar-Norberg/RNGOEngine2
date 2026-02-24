@@ -55,23 +55,23 @@ namespace rngo
     void RenderRunnable::ConsumeReadyResources()
     {
         // For now, just process all the ready assets.
-        // In the future, should probably have an adjustable amount of MODELS_TO_PROCESS, SHADERS_TO_PROCESS, etc etc.
+        // TODO: In the future, should probably have an adjustable amount of MODELS_TO_PROCESS, SHADERS_TO_PROCESS, etc etc.
         const auto readyAssets = m_assetRegistry.GetAllReady();
         for (const auto& readyAsset : readyAssets)
         {
             if (readyAsset->GetType() == AssetType::Texture)
             {
-                readyAsset->SetState(AssetState::Consumed);
+                readyAsset->SetState(AssetState::Uploaded);
                 // TODO:
             }
             if (readyAsset->GetType() == AssetType::Model)
             {
-                readyAsset->SetState(AssetState::Consumed);
+                readyAsset->SetState(AssetState::Uploaded);
                 // TODO:
             }
             if (readyAsset->GetType() == AssetType::Shader)
             {
-                readyAsset->SetState(AssetState::Consumed);
+                readyAsset->SetState(AssetState::Uploaded);
                 // TODO:
             }
         }

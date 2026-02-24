@@ -18,10 +18,11 @@ namespace rngo
 
     enum class AssetState
     {
-        Invalid,
-        Loading,
-        Ready,
-        Consumed
+        Invalid,   // Registered, but not loaded.
+        Loading,   // Actively being loaded on CPU-side.
+        Ready,     // Loaded to CPU.
+        Uploaded,  // Uploaded to consuming thread, Renderer, Audio etc etc. Still valid in CPU-side.
+        Consumed   // Uploaded to consuming thread, unloaded from CPU-side.
     };
 
     class Asset
