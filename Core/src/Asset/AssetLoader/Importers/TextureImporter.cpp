@@ -23,7 +23,7 @@ namespace rngo
         }
         const auto& path = fullPathOpt.value();
 
-        const auto textureDataResult = texture_loader::LoadTexture(path);
+        auto textureDataResult = texture_loader::LoadTexture(path);
 
         if (!textureDataResult)
         {
@@ -38,27 +38,13 @@ namespace rngo
             }
         }
 
-        const auto& textureData = textureDataResult.value();
+        auto textureData = std::move(textureDataResult.value());
 
         const auto texture =
-            std::make_shared<TextureAsset>(AssetType::Texture, AssetState::Ready, textureData);
+            std::make_shared<TextureAsset>(AssetType::Texture, AssetState::Ready, std::move(textureData));
         registry.Insert(metadata->GetHandle(), texture);
 
         return AssetLoadStatusCode::Success;
-    }
-
-    void TextureImporter::UnloadFromDisk(const std::shared_ptr<Asset> asset)
-    {
-        const auto textureAsset = std::dynamic_pointer_cast<TextureAsset>(asset);
-        if (!textureAsset)
-        {
-            RNGO_FATAL_ERROR("Type mismatch on TextureAsset");
-        }
-        rngo::texture_loader::FreeTexture(textureAsset->GetTextureData());
-
-        // TODO: Store TextureData as an optional field?
-        textureAsset->SetTextureData(texture_loader::TextureData{});
-        asset->SetState(AssetState::Consumed);
     }
 
     std::shared_ptr<AssetMetadata> TextureImporter::CreateTypedMetadataInstance(

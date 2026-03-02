@@ -100,20 +100,6 @@ namespace rngo
         );
     }
 
-    void AssetLoader::UnloadUploadedAssets()
-    {
-        const auto uploadedAssets = m_assetRegistry.GetAllUploaded();
-        for (const auto& asset : uploadedAssets)
-        {
-            auto* importerPtr = GetAssetImporterForType(asset->GetType());
-            if (!importerPtr)
-            {
-                RNGO_FATAL_ERROR("Cannot unload asset, no supported importer.");
-            }
-            importerPtr->UnloadFromDisk(asset);
-        }
-    }
-
     AssetImporter* AssetLoader::GetAssetImporterForExtension(const std::string_view extension)
     {
         AssetImporter* foundImporter = nullptr;

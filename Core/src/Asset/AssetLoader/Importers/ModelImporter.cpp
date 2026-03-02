@@ -15,10 +15,6 @@ namespace rngo
         return AssetLoadStatusCode::Success;
     }
 
-    void ModelImporter::UnloadFromDisk(std::shared_ptr<Asset> asset)
-    {
-    }
-
     std::shared_ptr<AssetMetadata> ModelImporter::CreateTypedMetadataInstance(
         AssetHandle handle, std::filesystem::path relativePath
     ) const

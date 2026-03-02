@@ -9,6 +9,11 @@
 
 namespace rngo::texture_loader
 {
+    void TextureDataDeleter::operator()(const RawTexturePtr p) const
+    {
+        stbi_image_free(p);
+    }
+
     std::expected<TextureData, TextureLoadingError> LoadTexture(const std::filesystem::path& path)
     {
         int width, height, nrChannels;
@@ -19,14 +24,11 @@ namespace rngo::texture_loader
             return std::unexpected(TextureLoadingError::FailedToLoad);
         }
 
+        auto uniqueWrapper = std::unique_ptr<RawTexture, TextureDataDeleter>(data, TextureDataDeleter{});
+
         return TextureData{
             static_cast<unsigned int>(width), static_cast<unsigned int>(height),
-            static_cast<unsigned int>(nrChannels), data
+            static_cast<unsigned int>(nrChannels), std::move(uniqueWrapper)
         };
-    }
-
-    void FreeTexture(const TextureData& texture)
-    {
-        stbi_image_free(texture.data);
     }
 }

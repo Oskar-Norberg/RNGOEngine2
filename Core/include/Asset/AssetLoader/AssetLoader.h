@@ -12,6 +12,7 @@
 #include "Importers/ModelImporter.h"
 #include "Importers/ShaderImporter.h"
 #include "Importers/TextureImporter.h"
+#include "Utilities/Threading/TSQueue.h"
 
 namespace rngo
 {
@@ -39,9 +40,6 @@ namespace rngo
         // Path relative to project root
         std::expected<AssetHandle, AssetImportErrorCode> ImportAsset(std::string_view relativePath);
         void RequestLoad(const AssetHandle& asset);
-
-        // TODO: TBH, I hate the entire structure around this. Reconsider!
-        void UnloadUploadedAssets();
 
     private:
         const AssetFetcher& m_assetFetcher;

@@ -20,23 +20,8 @@ namespace rngo
 
         std::optional<std::shared_ptr<const Asset>> Get(const AssetHandle& handle);
 
-        std::optional<std::shared_ptr<const Asset>> GetReady(const AssetHandle& handle);
-        std::optional<std::shared_ptr<const Asset>> GetUploaded(const AssetHandle& handle);
-        std::optional<std::shared_ptr<const Asset>> GetConsumed(const AssetHandle& handle);
-
-        // TODO: This seems extremely naive, this will be huge and dynamically allocated.
-        // TODO: This should probably take in a Functor and iterate over the list until it founds the correct assets.
-        std::vector<std::shared_ptr<Asset>> GetAllReady();
-        std::vector<std::shared_ptr<Asset>> GetAllUploaded();
-
     private:
         std::mutex mutex;
         std::unordered_map<AssetHandle, std::shared_ptr<Asset>, AssetHandleHasher> m_assets;
-
-    private:
-        std::optional<std::shared_ptr<const Asset>> GetAssetIfStateIs(const AssetHandle& handle, AssetState state);
-        std::vector<std::shared_ptr<Asset>> GetAllAssetOfState(AssetState state);
-
-
     };
 }

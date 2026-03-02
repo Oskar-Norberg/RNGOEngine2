@@ -15,16 +15,22 @@ namespace rngo::texture_loader
         FailedToLoad,
     };
 
+    using RawTexture = unsigned char;
+    using RawTexturePtr = RawTexture*;
+    struct TextureDataDeleter
+    {
+        void operator()(RawTexturePtr p) const;
+    };
+    using ManagedTextureDataType = std::unique_ptr<RawTexture, TextureDataDeleter>;
+
     struct TextureData
     {
-        unsigned int width;
-        unsigned int height;
-        unsigned int nrChannels;
+        unsigned int Width;
+        unsigned int Height;
+        unsigned int NrChannels;
 
-        // TODO: Wrap in unique ptr.
-        unsigned char* data;
+        ManagedTextureDataType Data;
     };
 
     std::expected<TextureData, TextureLoadingError> LoadTexture(const std::filesystem::path& path);
-    void FreeTexture(const TextureData& texture);
 }

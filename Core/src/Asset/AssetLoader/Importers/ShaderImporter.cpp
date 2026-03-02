@@ -14,10 +14,6 @@ namespace rngo
         return AssetLoadStatusCode::Success;
     }
 
-    void ShaderImporter::UnloadFromDisk(std::shared_ptr<Asset> asset)
-    {
-    }
-
     std::shared_ptr<AssetMetadata> ShaderImporter::CreateTypedMetadataInstance(
         AssetHandle handle, std::filesystem::path relativePath
     ) const

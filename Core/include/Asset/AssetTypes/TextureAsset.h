@@ -23,11 +23,6 @@ namespace rngo
             return m_textureData;
         }
 
-        void SetTextureData(texture_loader::TextureData textureData)
-        {
-            m_textureData = std::move(textureData);
-        }
-
     private:
         texture_loader::TextureData m_textureData;
     };
